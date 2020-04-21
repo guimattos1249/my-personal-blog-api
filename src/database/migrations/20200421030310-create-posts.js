@@ -21,13 +21,18 @@ module.exports = {
         type: Sequelize.STRING,
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       id_category: {
         type: Sequelize.INTEGER,
-        references: { model: 'categories', key: 'id' },
-        allowNull: true
+        allowNull: false,
+        references: {
+          model: 'categories',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       created_at: {
         type: Sequelize.DATE,

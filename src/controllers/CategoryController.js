@@ -1,6 +1,12 @@
 const Category = require('../models/Category');
 
 module.exports = {
+  async index(req, res) {
+    const categories = await Category.findAll();
+
+    return res.json(categories);
+  },
+
   async store(req, res) {
     const { description } = req.body;
 
@@ -8,4 +14,4 @@ module.exports = {
 
     return res.json(category);
   }
-}
+};

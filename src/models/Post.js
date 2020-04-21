@@ -6,15 +6,12 @@ class Post extends Model {
       title: DataTypes.STRING,
       date: DataTypes.DATE,
       description: DataTypes.STRING,
-      content: DataTypes.STRING,
-      id_category: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'categories', 
-          key: 'id'
-        }
-      }
+      content: DataTypes.STRING
     }, { sequelize });
+  }
+
+  static associate (models) {
+    this.belongsTo(models.Category, { foreignKey: 'id_category', as: 'categories' })
   }
 }
 

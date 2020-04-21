@@ -10,6 +10,8 @@ routes.post('/categories', CategoryController.store);
 
 routes.get('/posts', PostController.index);
 routes.post('/posts', PostController.store);
+routes.put('/posts/:id', PostController.update);
+routes.delete('/posts/:id', PostController.delete);
 
 routes.get('/posts/:id_category', PostCategoryController.index);
 

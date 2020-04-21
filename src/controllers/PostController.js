@@ -2,16 +2,6 @@ const Post = require('../models/Post');
 const Category = require('../models/Category');
 
 module.exports = {
-  async indexJoin (req, res) {
-    const id_category = req.params.id_category;
-
-    const categories = await Category.findByPk( id_category,
-      { include: { association: 'posts' }
-    });
-
-    return res.json(categories);
-  },
-
   async index(req, res) {
     const posts = await Post.findAll();
 
@@ -36,5 +26,41 @@ module.exports = {
     });
 
     return res.json(post);
+  },
+
+  async update (req, res) {
+    const id = req.params.id;
+    const { title, date, description, content, id_category } = req.body;
+
+    const post = await Post.update(
+      { 
+        title, 
+        date, 
+        description, 
+        content, 
+        id_category 
+      },
+      { 
+        where: {
+          id
+        },
+        returning: true,
+        plain: true 
+      }
+    )
+
+    return res.json(post);
+  },
+
+  async delete (req, res) {
+    const id  = req.params.id;
+
+    const post = await Post.destroy({
+      where: {
+        id
+      }
+    });
+
+    res.json(post);
   }
 };

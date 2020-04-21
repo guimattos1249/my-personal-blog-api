@@ -2,7 +2,7 @@ const Post = require('../models/Post');
 const Category = require('../models/Category');
 
 module.exports = {
-  async index(req, res) {
+  async index (req, res) {
     const posts = await Post.findAll();
 
     return res.json(posts);

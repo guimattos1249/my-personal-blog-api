@@ -13,7 +13,7 @@ routes.delete('/categories/:id', CategoryController.delete);
 
 routes.get('/posts', PostController.index);
 routes.get('/post/:id', PostQueryController.indexOne);
-routes.get('/posts/:date', PostQueryController.indexByDate);
+routes.get('/postsbydate/:date', PostQueryController.indexByDate);
 routes.post('/posts', PostController.store);
 routes.put('/posts/:id', PostController.update);
 routes.delete('/posts/:id', PostController.delete);

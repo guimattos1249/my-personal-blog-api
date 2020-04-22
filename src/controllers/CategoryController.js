@@ -2,17 +2,35 @@ const Category = require('../models/Category');
 
 module.exports = {
   async index (req, res) {
-    const categories = await Category.findAll();
+    try {
+      const categories = await Category.findAll();
 
-    return res.json(categories);
+      if(!categories)
+        return res.status(404).json({ error: 'Cannot find Categories' });
+
+      return res.json(categories);
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal Server Error!'});
+    }
   },
 
   async store (req, res) {
     const { description } = req.body;
 
-    const category = await Category.create({ description });
+    try {
+      const category = await Category.create({ description });
 
-    return res.json(category);
+      if(!category)
+        res.status(400).json({ error: 'Cannot create this Category' });
+
+      return res.json(category);
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal Server Error!'});
+    }    
   },
 
   async update (req, res) {
@@ -20,35 +38,53 @@ module.exports = {
 
     const { description } = req.body;
 
-    await Category.update({
-      description
-    }, 
-    {
-      where: {
-        id
-      },
-      returning: true,
-      plain: true 
-    });
+    try {
+      await Category.update({
+        description
+      }, 
+      {
+        where: {
+          id
+        },
+        returning: true,
+        plain: true 
+      });
+  
+      const category = await Category.findOne({
+        where: {
+          id
+        }
+      });
 
-    const category = await Category.findOne({
-      where: {
-        id
-      }
-    });
-
-    return res.json(category);
+      if(!category)
+        return res.status(400).json({ error: 'Cannot update this Category' });
+  
+      return res.json(category);
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal Server Error!'});
+    }
   },
 
   async delete (req, res) {
     const id = req.params.id;
 
-    const category = await Category.destroy({
-      where: {
-        id
-      }
-    });
+    try {
+      const category = await Category.destroy({
+        where: {
+          id
+        }
+      });
 
-    return res.json(category);
+      if(!category)
+        return res.status(400).json({ error: 'Cannot delete this Category' });
+  
+      return res.json(category);
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal Server Error!'});
+    }
   }
 };

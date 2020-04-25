@@ -2,14 +2,35 @@ const bcrypt = require('bcrypt-nodejs');
 const User = require('../models/User');
 
 module.exports = {
-  cryptPassword (password) {
-    bcrypt.hash(password, 10, function(err, hash) {
-      const cryptedPassword = hash;
+  async singin (req, res) {
+    const { email, password } = req.body;
 
-      console.log(cryptedPassword);
+    try {
+      const user = await User.findOne({
+        where: {
+          email
+        }
+      });
 
-      return cryptedPassword;
-    });
+      if(user) {
+        bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+          if (err, !isMatch) {
+            return res.status(401).send();
+          }
+
+          res.json({
+            first_name: user.first_name,
+            email: user.email
+          });
+        });
+        } else {
+            res.status(400).json({error: 'Usuário não Cadastrado!'});
+        }
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal Server Error!'});
+    }
   },
 
   async store (req, res) {

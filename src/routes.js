@@ -8,6 +8,7 @@ const PostQueryController = require('./controllers/PostQueryController');
 const routes = express.Router();
 
 routes.post('/user', UserController.store);
+routes.post('/singin', UserController.singin);
 
 routes.get('/categories', CategoryController.index);
 routes.post('/categories', CategoryController.store);

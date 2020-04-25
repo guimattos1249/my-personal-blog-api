@@ -12,7 +12,7 @@ class Post extends Model {
 
   static associate (models) {
     this.belongsTo(models.Category, { foreignKey: 'id_category', as: 'categories' })
-    this.belongsTo(models.User, { foreignKey: 'id_user', as: 'users' })
+    this.belongsTo(models.User, { foreignKey: 'id_user', as: 'posts' })
   }
 }
 

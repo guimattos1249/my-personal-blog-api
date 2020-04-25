@@ -1,10 +1,16 @@
 const Post = require('../models/Post');
 const Category = require('../models/Category');
 
+//TODO - add id_user on filter to posts query
+
 module.exports = {
   async index (req, res) {
+    const user = req.userId;
+
     try {
-      const posts = await Post.findAll();
+      const posts = await Post.findAll({
+        where: { id_user: user }  
+      });
 
       if(!posts)
         return res.status(404).json({error: 'Cannot find posts'});
@@ -19,6 +25,7 @@ module.exports = {
 
   async store(req, res) {
     const { title, date, description, content, id_category } = req.body;
+    const user = req.userId;
 
     try {
       const category = await Category.findByPk(id_category);
@@ -32,7 +39,8 @@ module.exports = {
         date, 
         description, 
         content, 
-        id_category 
+        id_category,
+        id_user: user 
       });
 
       if(!post)

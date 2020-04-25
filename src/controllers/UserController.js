@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt-nodejs');
-const jwt = require('jsonwebtoken');
+const TokeController = require('./TokenController');
 const User = require('../models/User');
 
 module.exports = {
+
   async singin (req, res) {
     const { email, password } = req.body;
 
@@ -16,18 +17,18 @@ module.exports = {
       if(user) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err, !isMatch) {
-            return res.status(401).json({ error: 'Usuário não encontrado!' });
+            return res.status(401).json({ error: 'User not found!' });
           }
 
           res.json({
             first_name: user.first_name,
             email: user.email,
-            result: jwt.sign({email: user.email}, 'mysecret')
+            token: TokeController.generateToken({ id: user.id })
           });
         });
-        } else {
-            res.status(400).json({ error: 'Usuário não Cadastrado!' });
-        }
+      } else {
+        res.status(400).json({ error: 'User cannot be registered!' });
+      }
     }
     catch (err) {
       console.log(err);
@@ -43,6 +44,10 @@ module.exports = {
     const cryptedPassword = bcrypt.hashSync(password, salt);
     
     try {
+      if(await User.findOne({ where: { email } }))
+        return res.status(400).json({ error: 'User Alredy exists' });
+
+
       const user = await User.create({
         first_name,
         last_name,
@@ -53,11 +58,16 @@ module.exports = {
       if(!user)
         return res.status(400).json({ error: 'Cannot create User' });
 
-      return res.json(user);
+      user.password = undefined;
+
+      return res.json({
+        user,
+        token: TokeController.generateToken({ id: user.id })
+      });
     }
     catch (err) {
       console.log(err);
       return res.status(500).json({ error: 'Internal Server Error!'});
     }
-  }
+  },
 }

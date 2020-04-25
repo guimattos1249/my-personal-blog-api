@@ -1,5 +1,7 @@
 const Category = require('../models/Category');
 
+//TODO - add id_user on filter to posts query
+
 module.exports = {
   async index (req, res) {
     try {
@@ -25,7 +27,10 @@ module.exports = {
       if(!category)
         res.status(400).json({ error: 'Cannot create this Category' });
 
-      return res.json(category);
+      return res.json({ 
+        category ,
+        user: req.userId
+      });
     }
     catch (err) {
       console.log(err);

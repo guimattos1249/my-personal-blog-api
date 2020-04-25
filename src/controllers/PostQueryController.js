@@ -3,11 +3,13 @@ const Post = require('../models/Post');
 module.exports = {
   async indexOne (req, res) {
     const id = req.params.id;
+    const user = req.userId;
 
     try {
       const posts = await Post.findOne({
         where: {
-          id
+          id,
+          id_user: user
         }
       });
 

@@ -1,10 +1,13 @@
 const express = require('express');
+const UserController = require('./controllers/UserController');
 const CategoryController = require('./controllers/CategoryController');
 const PostController = require('./controllers/PostController');
 const PostCategoryController = require('./controllers/PostCategoryController');
 const PostQueryController = require('./controllers/PostQueryController');
 
 const routes = express.Router();
+
+routes.post('/user', UserController.store);
 
 routes.get('/categories', CategoryController.index);
 routes.post('/categories', CategoryController.store);

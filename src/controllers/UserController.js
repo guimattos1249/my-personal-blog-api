@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt-nodejs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 module.exports = {
@@ -13,18 +14,19 @@ module.exports = {
       });
 
       if(user) {
-        bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+        bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err, !isMatch) {
-            return res.status(401).send();
+            return res.status(401).json({ error: 'Usuário não encontrado!' });
           }
 
           res.json({
             first_name: user.first_name,
-            email: user.email
+            email: user.email,
+            result: jwt.sign({email: user.email}, 'mysecret')
           });
         });
         } else {
-            res.status(400).json({error: 'Usuário não Cadastrado!'});
+            res.status(400).json({ error: 'Usuário não Cadastrado!' });
         }
     }
     catch (err) {

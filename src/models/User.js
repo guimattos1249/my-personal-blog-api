@@ -12,7 +12,7 @@ class User extends Model {
 
   static associate (models) {
     this.hasMany(models.Post, { foreignKey: 'id_user', as: 'posts' });
-    this.hasMany(models.Post, { foreignKey: 'id_user', as: 'categories' });
+    this.hasMany(models.Post, { foreignKey: 'id_user', as: 'user' });
   }
 }
 

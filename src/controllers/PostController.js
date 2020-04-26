@@ -1,8 +1,6 @@
 const Post = require('../models/Post');
 const Category = require('../models/Category');
 
-//TODO - add id_user on filter to posts query
-
 module.exports = {
   async index (req, res) {
     const user = req.userId;
@@ -57,6 +55,7 @@ module.exports = {
   async update (req, res) {
     const id = req.params.id;
     const { title, date, description, content, id_category } = req.body;
+    const user = req.userId;
 
     try{
       const post = await Post.update(
@@ -69,7 +68,8 @@ module.exports = {
         },
         { 
           where: {
-            id
+            id,
+            id_user: user
           },
           returning: true,
           plain: true 
@@ -90,11 +90,13 @@ module.exports = {
 
   async delete (req, res) {
     const id  = req.params.id;
+    const user = req.userId;
 
     try {
       const post = await Post.destroy({
         where: {
-          id
+          id,
+          id_user: user
         }
       });
 

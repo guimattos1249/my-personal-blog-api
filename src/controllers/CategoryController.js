@@ -1,11 +1,15 @@
 const Category = require('../models/Category');
 
-//TODO - add id_user on filter to posts query
-
 module.exports = {
   async index (req, res) {
+    const user = req.userId;
+
     try {
-      const categories = await Category.findAll();
+      const categories = await Category.findAll({
+        where: {
+          id_user: user
+        }
+      });
 
       if(!categories)
         return res.status(404).json({ error: 'Cannot find Categories' });
@@ -20,16 +24,19 @@ module.exports = {
 
   async store (req, res) {
     const { description } = req.body;
+    const user = req.userId;
 
     try {
-      const category = await Category.create({ description });
+      const category = await Category.create({ 
+        description,
+        id_user: user
+      });
 
       if(!category)
         res.status(400).json({ error: 'Cannot create this Category' });
 
       return res.json({ 
-        category ,
-        user: req.userId
+        category
       });
     }
     catch (err) {
@@ -40,6 +47,7 @@ module.exports = {
 
   async update (req, res) {
     const id = req.params.id;
+    const user = req.userId;
 
     const { description } = req.body;
 
@@ -49,7 +57,8 @@ module.exports = {
       }, 
       {
         where: {
-          id
+          id,
+          id_user: user
         },
         returning: true,
         plain: true 
@@ -74,11 +83,13 @@ module.exports = {
 
   async delete (req, res) {
     const id = req.params.id;
+    const user = req.userId;
 
     try {
       const category = await Category.destroy({
         where: {
-          id
+          id,
+          id_user: user
         }
       });
 

@@ -1,4 +1,4 @@
-const PASSWORD = require('../../password');
+const { PASSWORD } = require('../../.env');
 
 module.exports = {
   dialect: 'mysql',

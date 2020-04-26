@@ -27,10 +27,13 @@ module.exports = {
 
   async indexByDate (req, res) {
     const date = new Date(req.params.date);
+    const user = req.userId;
+
     try {
       const posts = await Post.findAll({
         where: {
-          date
+          date,
+          id_user: user
         }
       });
 

@@ -10,7 +10,8 @@ class Category extends Model {
   }
 
   static associate (models) {
-    this.hasMany(models.Post, { foreignKey: 'id_category', as: 'posts' })
+    this.hasMany(models.Post, { foreignKey: 'id_category', as: 'posts' });
+    this.belongsTo(models.User, { foreignKey: 'id_user', as: 'categories' });
   }
 }
 

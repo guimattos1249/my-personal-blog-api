@@ -1,7 +1,7 @@
 # my-personal-blog
 
 my-personal-blog is a project for users to create posts from different categories and themes.
-this it's the project api.
+this is the project api.
 
 ### Prerequisites
 

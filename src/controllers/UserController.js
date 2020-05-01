@@ -3,7 +3,6 @@ const TokeController = require('./TokenController');
 const User = require('../models/User');
 
 module.exports = {
-
   async singin (req, res) {
     const { email, password } = req.body;
 

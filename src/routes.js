@@ -15,17 +15,18 @@ routes.post('/singin', UserController.singin);
 routes.use(authMiddleware);
 
 routes.get('/categories', CategoryController.index);
-routes.post('/categories', CategoryController.store);
-routes.put('/categories/:id', CategoryController.update);
-routes.delete('/categories/:id', CategoryController.delete);
+routes.get('/category/:id', CategoryController.indexById);
+routes.post('/category', CategoryController.store);
+routes.put('/category/:id', CategoryController.update);
+routes.delete('/category/:id', CategoryController.delete);
 
 routes.get('/posts', PostController.index);
 routes.get('/post/:id', PostQueryController.indexOne);
 routes.get('/postsbydate/:date', PostQueryController.indexByDate);
-routes.post('/posts', PostController.store);
-routes.put('/posts/:id', PostController.update);
-routes.delete('/posts/:id', PostController.delete);
+routes.post('/post', PostController.store);
+routes.put('/post/:id', PostController.update);
+routes.delete('/post/:id', PostController.delete);
 
-routes.get('/posts/:id_category', PostCategoryController.index);
+routes.get('/post/:id_category', PostCategoryController.index);
 
 module.exports = routes;

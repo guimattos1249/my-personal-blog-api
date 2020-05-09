@@ -22,6 +22,29 @@ module.exports = {
     }
   },
 
+  async indexById (req, res) {
+    const id = req.params.id;
+    const user = req.userId;
+
+    try {
+      const category = await Category.findOne({
+        where: {
+          id: id,
+          id_user: user
+        }
+      });
+
+      if(!category)
+        return res.status(404).json({ error: 'Cannot find Category' });
+
+      return res.json(category);
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Internal Server Error!'});
+    }
+  },
+
   async store (req, res) {
     const { description } = req.body;
     const user = req.userId;
